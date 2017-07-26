@@ -1,13 +1,13 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Sprite from './native/components/sprite';
-import { Text, View } from 'react-native';
+import React from "react";
+import PropTypes from "prop-types";
+import Sprite from "./native/components/sprite";
+import { Text, View } from "react-native";
 
 class PistonHurricane extends React.Component {
   constructor(props, context) {
     super(props, context);
 
-    this.pistonHurricaneImage = require('../assets/piston_hurricane.png');
+    this.pistonHurricaneImage = require("../assets/piston_hurricane.png");
 
     this.loopID = null;
 
@@ -32,16 +32,21 @@ class PistonHurricane extends React.Component {
     this.context.loop.unsubscribe(this.loopID);
   }
 
-  shouldComponentUpdate() {
+  componentWillReceiveProps(nextProps) {
+    // console.log(nextProps);
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    //console.log(nextProps, nextState);
     return true;
   }
 
   aiLoop() {
-   console.log(this.context.loop.loopID);
-     if(this.context.loop.loopID && this.context.loop.loopID % 100 === 1) {
-       const randomState = Math.floor(Math.random() * 5);
-       this.props.onNpcStateChange(randomState);
-     }
+    // console.log(this.context.loop.loopID);
+    if (this.context.loop.loopID && this.context.loop.loopID % 100 === 1) {
+      const randomState = Math.floor(Math.random() * 5);
+      this.props.onNpcStateChange(randomState);
+    }
 
     // this.props.onNpcHit(30);
   }
@@ -54,13 +59,18 @@ class PistonHurricane extends React.Component {
     );
   };
 
+  handleUpdateStepCount = currentStep => {
+    console.log(currentStep);
+  };
+
   render() {
-    const {npcState} = this.props;
+    const { npcState } = this.props;
     return (
       <View>
         <Sprite
           repeat={true}
           onPlayStateChanged={this.handlePlayStateChanged}
+          onUpdateStepCount={this.handleUpdateStepCount}
           src={this.pistonHurricaneImage}
           scale={2}
           state={npcState}
@@ -69,7 +79,7 @@ class PistonHurricane extends React.Component {
             1, //1 jab
             2, //2 cross
             2, //3 uppercut
-            1  //4 body_jab
+            1 //4 body_jab
           ]}
           offset={[0, 0]}
           tileWidth={216}

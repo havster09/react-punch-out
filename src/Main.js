@@ -78,6 +78,6 @@ const mapActionsToProps = dispatch => ({
 
 export default (Main = connect(mapStateToProps, mapActionsToProps)(Main));
 
-// todo add tick callback in Sprite
+// todo make npcState into an object add ticksPerFrame to each anim state
 // todo add flip method
 // todo add touch events for player attacks

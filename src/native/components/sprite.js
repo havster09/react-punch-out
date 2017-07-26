@@ -7,6 +7,7 @@ export default class Sprite extends Component {
   static propTypes = {
     offset: PropTypes.array,
     onPlayStateChanged: PropTypes.func,
+    onUpdateStepCount: PropTypes.func,
     repeat: PropTypes.bool,
     scale: PropTypes.number,
     src: PropTypes.number,
@@ -21,6 +22,7 @@ export default class Sprite extends Component {
   static defaultProps = {
     offset: [0, 0],
     onPlayStateChanged: () => {},
+    onUpdateStepCount: () => {},
     repeat: true,
     src: '',
     state: 0,
@@ -81,6 +83,8 @@ export default class Sprite extends Component {
         const { currentStep } = this.state;
         const lastStep = steps[state];
         const nextStep = currentStep === lastStep ? 0 : currentStep + 1;
+
+        this.props.onUpdateStepCount(currentStep);
 
         this.setState({
           currentStep: nextStep,
