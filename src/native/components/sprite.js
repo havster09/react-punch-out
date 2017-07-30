@@ -10,6 +10,7 @@ export default class Sprite extends Component {
     onUpdateStepCount: PropTypes.func,
     repeat: PropTypes.bool,
     scale: PropTypes.number,
+    direction: PropTypes.number,
     src: PropTypes.number,
     state: PropTypes.number,
     steps: PropTypes.array,
@@ -27,6 +28,7 @@ export default class Sprite extends Component {
     src: '',
     state: 0,
     steps: [],
+    direction: 1,
     ticksPerFrame: 4,
     tileHeight: 64,
     tileWidth: 64,
@@ -82,7 +84,11 @@ export default class Sprite extends Component {
       if (steps[state] !== 0) {
         const { currentStep } = this.state;
         const lastStep = steps[state];
-        const nextStep = currentStep === lastStep ? 0 : currentStep + 1;
+        let nextStep = currentStep === lastStep ? 0 : currentStep + 1;
+
+        if(!repeat && currentStep > nextStep) {
+          nextStep = currentStep;
+        }
 
         this.props.onUpdateStepCount(currentStep);
 
@@ -121,12 +127,13 @@ export default class Sprite extends Component {
 
   getWrapperStyles() {
     const scale = this.props.scale || this.context.scale;
+    const scaleX = this.props.direction > 0 ? scale: -Math.abs(scale);
     return {
       height: this.props.tileHeight,
       width: this.props.tileWidth,
       overflow: 'hidden',
       position: 'relative',
-      transform: [{scale: scale}]
+      transform: [{scaleX}, {scaleY: scale}]
     };
   }
 

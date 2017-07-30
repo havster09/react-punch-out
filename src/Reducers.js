@@ -3,7 +3,7 @@ import * as types from './Constants';
 
 const initialState = {
   npcHealth: 100,
-  npcState: 0
+  npcState: {state: 0, ticksPerFrame: 10, direction: 0, repeat: true}
 };
 
 const npcHealth = (state = initialState.npcHealth, action) => {

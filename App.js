@@ -25,7 +25,3 @@ class App extends React.Component {
 
 
 export default App;
-
-// todo add redux
-// todo add flip method
-// todo add touch events for player attacks

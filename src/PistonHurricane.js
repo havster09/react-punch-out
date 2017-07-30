@@ -41,10 +41,24 @@ class PistonHurricane extends React.Component {
     return true;
   }
 
+  toggleDirection = () => {
+    return this.props.npcState.direction > 0 ? 0: 1
+  };
+
+  toggleRepeat = () => {
+    console.log(this.props.npcState.repeat);
+    return !this.props.npcState.repeat;
+  };
+
   aiLoop() {
     // console.log(this.context.loop.loopID);
     if (this.context.loop.loopID && this.context.loop.loopID % 100 === 1) {
-      const randomState = Math.floor(Math.random() * 5);
+      const randomState = {
+        state: Math.floor(Math.random() * 5),
+        ticksPerFrame: 10,
+        direction: this.toggleDirection(),
+        repeat: this.toggleRepeat()
+      };
       this.props.onNpcStateChange(randomState);
     }
 
@@ -60,7 +74,7 @@ class PistonHurricane extends React.Component {
   };
 
   handleUpdateStepCount = currentStep => {
-    console.log(currentStep);
+    // console.log(currentStep);
   };
 
   render() {
@@ -68,23 +82,24 @@ class PistonHurricane extends React.Component {
     return (
       <View>
         <Sprite
-          repeat={true}
+          repeat={npcState.repeat}
           onPlayStateChanged={this.handlePlayStateChanged}
           onUpdateStepCount={this.handleUpdateStepCount}
           src={this.pistonHurricaneImage}
           scale={2}
-          state={npcState}
+          state={npcState.state}
           steps={[
             3, //0 idle
             1, //1 jab
             2, //2 cross
             2, //3 uppercut
-            1 //4 body_jab
+            1  //4 body_jab
           ]}
           offset={[0, 0]}
           tileWidth={216}
           tileHeight={216}
-          ticksPerFrame={this.state.ticksPerFrame}
+          direction={npcState.direction}
+          ticksPerFrame={npcState.ticksPerFrame}
         />
       </View>
     );
@@ -94,7 +109,7 @@ class PistonHurricane extends React.Component {
 PistonHurricane.propTypes = {
   onNpcHit: PropTypes.func,
   onNpcStateChange: PropTypes.func,
-  npcState: PropTypes.number
+  npcState: PropTypes.object
 };
 PistonHurricane.contextTypes = {
   loop: PropTypes.object,
